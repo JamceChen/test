@@ -4,11 +4,12 @@ import pygame
 from pygame.surface import Surface, SurfaceType
 from gameobject import GameObject
 import math
+import random
 
 #玩家類別
 class Enemy(GameObject):
     #建構式，playground 為必要參數
-    def __init__(self, playground, xy = None, sensitivity = 1, scale_factor = 0.2):
+    def __init__(self, playground, xy = None, sensitivity = 1, scale_factor = 0.1):
         GameObject.__init__(self, playground)
         self._moveScale = 0.5 * sensitivity
         __parent_path = Path(__file__).parents[1]
@@ -40,8 +41,9 @@ class Enemy(GameObject):
             self._image.get_rect().h
         ) #碰撞半徑
         
-        self._vx = 1 #水平速度，每次update移動1像素
-        self._vy = 1 #垂直速度，每次update移動1像素
+        # 隨機初始水平速度方向
+        self._vx = random.choice([-1, 1]) * 2  # 水平速度，每次update移動2像素
+        self._vy = 1  # 垂直速度，每次update移動1像素
 
         self._objectBound = (
             10, 
@@ -77,7 +79,6 @@ class Enemy(GameObject):
     def collision_detect(self, enemies):
         for m in enemies:
             if self._collided_(m):
-                self._hp -= 10
                 self._collided = True
                 self._available = False
                 m._collided = True

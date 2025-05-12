@@ -24,7 +24,7 @@ class MyMissile(GameObject):
         self._x = xy[0]
         self._y = xy[1]
         self._center = self._x + self._image.get_rect().w/2, self._y + self._image.get_rect().h/2
-        self._radius = self._image.get_rect().w/2
+        self._radius = self._image.get_rect().w/4
         
 
         #左右邊界不重要，上邊界等整個飛彈離開螢幕時觸發
@@ -49,9 +49,7 @@ class MyMissile(GameObject):
     def collision_detect(self, enemies):
         for m in enemies:
             if self._collided_(m):
-                self._hp -= 10
                 self._collided = True
                 self._available = False
-                m._hp = -1
                 m._collided = True
                 m._available = False

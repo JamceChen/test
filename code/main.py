@@ -39,7 +39,7 @@ pygame.display.set_icon(icon)
 background = pygame.image.load(background_path).convert()
 
 # 設定敵人生成計時器
-pygame.time.set_timer(spawnEnemy, 2000)  # 每2秒生成一個敵人
+pygame.time.set_timer(spawnEnemy, 1000)  # 每1秒生成一個敵人
 
 #設定無窮迴圈，讓視窗保持更新與執行
 while running:
@@ -135,14 +135,22 @@ while running:
 
     screen.blit(background, (0, 0)) #更新背景圖片
     Missiles = [item for item in Missiles if item._available]
+    Enemies = [item for item in Enemies if item._available]
+    
     #繪製子彈
     for m in Missiles:
         m.update()
         screen.blit(m._image, (m._x, m._y))
+        # 檢測子彈與敵人的碰撞
+        m.collision_detect(Enemies)
+    
     #繪製敵人
     for e in Enemies:
         e.update()
         screen.blit(e._image, (e._x, e._y))
+        # 檢測敵人與玩家的碰撞
+        player.collision_detect([e])
+    
     #繪製玩家
     player.update() #更新player狀態
     screen.blit(player._image, (player._x, player._y)) 

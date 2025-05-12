@@ -2,9 +2,13 @@
 建立遊戲視窗
 設定title和icon
 建立遊戲物件
-    行為:
+    gameobject行為:
         位置更新
         設定移動方向與計量值
         碰撞偵測
+        player
+        mymissile
+        enemy
+            碰撞
 遊戲物件移動
 鍵盤輸入事件
