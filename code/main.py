@@ -4,6 +4,7 @@ from player import Player
 from mymissile import MyMissile
 from enemy import Enemy
 import random
+from explosion import Explosion
 
 #初始化pygame系統
 pygame.init()
@@ -29,6 +30,7 @@ keyCountY = 0 #計算案件被按下的次數
 #建立物件串列
 Missiles = []
 Enemies = []
+Boom = []
 #建立事件編號
 launchMissile = pygame.USEREVENT + 1
 spawnEnemy = pygame.USEREVENT + 2
@@ -145,7 +147,7 @@ while running:
     screen.blit(background, (0, 0)) #更新背景圖片
     Missiles = [item for item in Missiles if item._available]
     Enemies = [item for item in Enemies if item._available]
-    
+    Boom = [item for item in Boom if item._available]
     # 如果玩家還活著，繼續遊戲
     if player._hp > 0:
         #繪製子彈
@@ -154,14 +156,24 @@ while running:
             screen.blit(m._image, (m._x, m._y))
             # 檢測子彈與敵人的碰撞
             m.collision_detect(Enemies)
-        
+            if m._collided:
+                #Boom.append(Explosion(xy=(m._x + m._image.get_rect().width/2, m._y + m._image.get_rect().height/2), scale_factor=0.3))
+                pass
+
         #繪製敵人
         for e in Enemies:
             e.update()
             screen.blit(e._image, (e._x, e._y))
             # 檢測敵人與玩家的碰撞
             player.collision_detect([e])
-        
+            if e._collided:
+                Boom.append(Explosion(xy=(e._x, e._y)))
+
+        #繪製爆炸
+        for e in Boom:
+            e.update()
+            screen.blit(e._image, (e._x, e._y))
+
         #繪製玩家
         player.update() #更新player狀態
         screen.blit(player._image, (player._x, player._y))
@@ -169,11 +181,15 @@ while running:
         # 顯示血量
         hp_text = font.render(f"HP: {player._hp}", True, (255, 255, 255))
         screen.blit(hp_text, (10, 10))
+        
     else:
         # 顯示遊戲結束畫面
-        screen.blit(gameover, (screenWidth//2 - gameover.get_width()//2, 
-                             screenHigh//2 - gameover.get_height()//2))
+        screen.blit(gameover, (
+            screenWidth//2 - gameover.get_width()//2, 
+            screenHigh//2 - gameover.get_height()//2)
+            )
     
+
     pygame.display.update() #更新螢幕狀態
     dt =clock.tick(fps) #每秒更新fps次
 

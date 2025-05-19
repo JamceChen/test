@@ -9,11 +9,11 @@ import random
 #玩家類別
 class Enemy(GameObject):
     #建構式，playground 為必要參數
-    def __init__(self, playground, xy = None, sensitivity = 1, scale_factor = 0.1):
+    def __init__(self, playground, xy = None, sensitivity = 1, scale_factor = 0.2):
         GameObject.__init__(self, playground)
         self._moveScale = 0.5 * sensitivity
         __parent_path = Path(__file__).parents[1]
-        self.__enemy_path = __parent_path /'assets' /'images' /'enemy.png'
+        self.__enemy_path = __parent_path /'assets' /'images' /'enemy0.png'
         self._image = pygame.image.load(self.__enemy_path)
 
         # 縮放圖片
